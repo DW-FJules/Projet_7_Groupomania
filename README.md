@@ -29,7 +29,7 @@ Ouvrir MySql command Line client puis effectuer ces deux lignes de commandes :
 
 `USE groupomania;`
 
-Importer le fichier groupomania.sql
+Importer le fichier DBgroupo.sql
 
 ## -- BACK END --
 

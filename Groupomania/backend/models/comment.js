@@ -12,6 +12,11 @@ class Comment {
     return db.execute(sql);
   }
 
+  static findOne(id) {
+    let sql = `SELECT * FROM comment WHERE id='${id}'`;
+    return db.execute(sql);
+  }
+
   static deleteOne(id) {
     let sql = `DELETE FROM comment WHERE id='${id}'`;
     return db.execute(sql);

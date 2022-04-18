@@ -44,14 +44,21 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-  Comment.deleteByPost(req.params.id).then(() => {
-    Post.deleteOne(req.params.id)
-    .then(() => {
-      res.status(200).json("Post supprimé !");
+  Post.findOne(req.params.id)
+    .then((post) => {
+      if (post.authorId !== req.auth.userId || user.role !== "admin") {
+        res.status(403).json({ error: "Requête non autorisé" });
+      }
+      Post.deleteOne(req.params.id)
+        .then(() => res.status(200).json({ comment: "Post supprimé !" }))
+        .catch((error) => res.status(400).json({ error }));
+      Comment.deleteByPost(req.params.id)
+        .then(() =>
+          res
+            .status(200)
+            .json({ comment: "Commentaires liés au post supprimés !" })
+        )
+        .catch((error) => res.status(400).json({ error }));
     })
-    .catch((error) => {
-      res.status(500).json(error);
-    });
-  })
+    .catch((error) => res.status(500).json({ error }));
 };
-

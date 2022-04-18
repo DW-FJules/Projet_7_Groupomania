@@ -1,12 +1,5 @@
 import { createStore } from "vuex";
 
-// export default createStore({
-//   state: {},
-//   mutations: {},
-//   actions: {},
-//   modules: {},
-// });
-
 import axios from "axios";
 
 // Create a new store axios.
