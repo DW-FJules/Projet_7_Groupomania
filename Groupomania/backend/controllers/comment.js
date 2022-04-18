@@ -32,24 +32,12 @@ exports.getAll = (req, res, next) => {
     });
 };
 
-// exports.delete = (req, res, next) => {
-//   Comment.deleteOne(req.params.id)
-//     .then((comment) => {
-//       if (comment.authorId !== req.auth.authorId) {
-//         res.status(403).json({ error: "Requête non autorisé" });}
-
-//     .then(() => res.status(200).json("Commentaire supprimé !") )
-//     })
-//     .catch((error) => {
-//       res.status(500).json(error);
-//     });
-// };
-
 //Delete
+
 exports.delete = (req, res, next) => {
   Comment.findOne(req.params.id)
     .then((comment) => {
-      if (comment.authorId !== req.auth.userId || user.role !== "admin") {
+      if (comment.authorId !== req.auth.userId) {
         res.status(403).json({ error: "Requête non autorisé" });
       }
       Comment.deleteOne(req.params.id)

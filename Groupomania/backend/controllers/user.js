@@ -52,28 +52,13 @@ exports.login = (req, res, next) => {
 // Supprimer le compte
 
 exports.delete = (req, res, next) => {
-  User.findOne(req.params.id)
-    .then((user) => {
-      if (user.id !== req.auth.userId || user.role !== "admin") {
-        res.status(403).json({ error: "Requête non autorisé" });
-      }
-      Comment.deleteByUser(req.params.id)
-        .then(() =>
-          res
-            .status(200)
-            .json({ comment: "Commentaires liés à l'utilisateur supprimés !" })
-        )
-        .catch((error) => res.status(400).json({ error }));
-      Post.deleteByUser(req.params.id)
-        .then(() =>
-          res
-            .status(200)
-            .json({ comment: "Posts liés à l'utilisateur supprimés !" })
-        )
-        .catch((error) => res.status(400).json({ error }));
-      User.deleteOne(req.params.id)
-        .then(() => res.status(200).json({ comment: "Utilisateur supprimé !" }))
-        .catch((error) => res.status(400).json({ error }));
+  Comment.deleteByUser(req.params.id)
+    .then(() => {
+      Post.deleteByUser(req.params.id).then(() => {
+        User.deleteOne(req.params.id).then(() => {
+          res.status(200).json("utilisateur supprimé");
+        });
+      });
     })
     .catch((error) => res.status(500).json({ error }));
 };
